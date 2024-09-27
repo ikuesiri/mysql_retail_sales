@@ -1,17 +1,16 @@
-# Retail Sales Analysis SQL Project
+# Retail Sales Data Analysis  MYSQL Project
 
 ## Project Overview
 
 **Project Title**: Retail Sales Analysis  
-**Level**: Beginner  
 **Database**: `p1_retail_db`
 
-This project is designed to demonstrate SQL skills and techniques typically used by data analysts to explore, clean, and analyze retail sales data. The project involves setting up a retail sales database, performing exploratory data analysis (EDA), and answering specific business questions through SQL queries. This project is ideal for those who are starting their journey in data analysis and want to build a solid foundation in SQL.
+This project is designed to demonstrate SQL skills and techniques typically used by data analysts to explore, clean, and analyze retail sales data. The project involves setting up a retail sales database, performing exploratory data analysis (EDA), and answering specific business questions through SQL queries (on MySQL).
 
 ## Objectives
 
-1. **Set up a retail sales database**: Create and populate a retail sales database with the provided sales data.
-2. **Data Cleaning**: Identify and remove any records with missing or null values.
+1. **Set up a retail sales database**: Create and populate a retail sales database with the provided sales dataset.
+2. **Data Cleaning**: Identify and remove any records with BLANK or null values and standardize the data.
 3. **Exploratory Data Analysis (EDA)**: Perform basic exploratory data analysis to understand the dataset.
 4. **Business Analysis**: Use SQL to answer specific business questions and derive insights from the sales data.
 
@@ -20,10 +19,13 @@ This project is designed to demonstrate SQL skills and techniques typically used
 ### 1. Database Setup
 
 - **Database Creation**: The project starts by creating a database named `p1_retail_db`.
-- **Table Creation**: A table named `retail_sales` is created to store the sales data. The table structure includes columns for transaction ID, sale date, sale time, customer ID, gender, age, product category, quantity sold, price per unit, cost of goods sold (COGS), and total sale amount.
+- **Table Creation**: A table named `retail_sales` is created to store the sales data. The table structure includes columns for transactions_id,	sale_date, sale_time, customer_id	gender, age, category, quantity, price_per_unit, cogs(cost of goods), total_sale.
+
+Load the dataset automatically by first creating a schema and navigating to upload the data,     OR
 
 ```sql
 CREATE DATABASE p1_retail_db;
+USE p1_retail_db;
 
 CREATE TABLE retail_sales
 (
@@ -31,39 +33,53 @@ CREATE TABLE retail_sales
     sale_date DATE,	
     sale_time TIME,
     customer_id INT,	
-    gender VARCHAR(10),
+    gender TEXT,
     age INT,
-    category VARCHAR(35),
+    category TEXT,
     quantity INT,
-    price_per_unit FLOAT,	
-    cogs FLOAT,
-    total_sale FLOAT
+    price_per_unit INT,	
+    cogs INT,
+    total_sale INT
 );
 ```
 
 ### 2. Data Exploration & Cleaning
 
 - **Record Count**: Determine the total number of records in the dataset.
+- **Standardize**: fix error on **transaction_id** name [issue only mySQL].
+- **Null Value Check**: Check for any null values in the dataset and delete records with missing data.
 - **Customer Count**: Find out how many unique customers are in the dataset.
 - **Category Count**: Identify all unique product categories in the dataset.
-- **Null Value Check**: Check for any null values in the dataset and delete records with missing data.
+
 
 ```sql
-SELECT COUNT(*) FROM retail_sales;
-SELECT COUNT(DISTINCT customer_id) FROM retail_sales;
-SELECT DISTINCT category FROM retail_sales;
 
+SELECT COUNT(*) 
+FROM p1_retail_db.retail_sales;
+
+-- Fixing the error 'transaction name'
+ALTER TABLE  retail_sales
+CHANGE ï»¿transactions_id transactions_id INT;
+
+--  CHECKING FOR NULL VALUES
 SELECT * FROM retail_sales
-WHERE 
-    sale_date IS NULL OR sale_time IS NULL OR customer_id IS NULL OR 
-    gender IS NULL OR age IS NULL OR category IS NULL OR 
-    quantity IS NULL OR price_per_unit IS NULL OR cogs IS NULL;
+WHERE age IS NULL 
+OR quantity	IS NULL
+OR price_per_unit IS NULL
+OR cogs	IS NULL
+OR total_sale IS NULL
+;
+-- **Record Count**: Determine the total number of records in the dataset.
 
-DELETE FROM retail_sales
-WHERE 
-    sale_date IS NULL OR sale_time IS NULL OR customer_id IS NULL OR 
-    gender IS NULL OR age IS NULL OR category IS NULL OR 
-    quantity IS NULL OR price_per_unit IS NULL OR cogs IS NULL;
+SELECT * FROM p1_retail_db.retail_sales;
+SELECT COUNT(transactions_id) FROM retail_sales;
+
+
+-- **Customer Count**: Find out how many unique customers are in the dataset.
+SELECT COUNT( DISTINCT customer_id) FROM retail_sales;
+
+-- **Category Count**: Identify all unique product categories in the dataset.
+SELECT COUNT( DISTINCT category)  FROM retail_sales;
 ```
 
 ### 3. Data Analysis & Findings
